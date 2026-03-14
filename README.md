@@ -23,8 +23,6 @@
 
 Experience the engine visually through a React-powered search interface.
 
-![IRKit Demo](https://raw.githubusercontent.com/VenuArvind/IRKit/main/demo/src/assets/hero.png)
-
 1. **Start the API**: `irkit serve --source arxiv --max-docs 500`
 2. **Start the UI**: `cd demo && npm run dev`
 3. **Open**: `http://localhost:5173`
