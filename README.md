@@ -93,12 +93,6 @@ print(engine.stats())
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Whether you want to add a new Data Source or a specialized Ranker, please feel free to open a Pull Request.
-
 ---
 
-## 📜 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+Made with ❤️ by Venu Arvind
