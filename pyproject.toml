@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "irkit"
+version = "0.1.0"
+description = "Pluggable distributed hybrid information retrieval toolkit"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Venu Arvind Arangarajan", email = "venuarvinda066@gmail.com" }]
+requires-python = ">=3.10"
+keywords = ["information retrieval", "search", "BM25", "semantic search", "distributed", "NLP"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Indexing",
+]
+dependencies = [
+    "rank-bm25>=0.2.2",
+    "faiss-cpu>=1.7.4",
+    "sentence-transformers>=2.7.0",
+    "openai>=1.0.0",
+    "datasets>=2.0.0",
+    "Wikipedia-API>=0.6.0",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "redis>=5.0.0",
+    "psycopg2-binary>=2.9.9",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "numpy>=1.26.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.27.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio", "pytest-cov", "build", "twine"]
+
+[project.scripts]
+irkit = "cli.main:app"
+
+[tool.setuptools]
+packages = ["irkit", "cli"]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/irkit"
+Documentation = "https://github.com/yourusername/irkit#readme"
+Repository = "https://github.com/yourusername/irkit"
