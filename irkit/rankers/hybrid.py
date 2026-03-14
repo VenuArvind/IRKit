@@ -7,6 +7,8 @@ class HybridRanker(BaseRanker):
     def __init__(self, rankers: List[BaseRanker], k: int = 60):
         self.rankers = rankers
         self.k = k
+        # Expose embedder for caching logic
+        self.embedder = next((r.embedder for r in rankers if hasattr(r, 'embedder')), None)
     
     def index(self, documents: List[dict]) -> None:
         for ranker in self.rankers:

@@ -11,10 +11,11 @@ class IndexEngine:
     Source -> Storage -> Ranker pipeline
     """
 
-    def __init__(self, ranker: BaseRanker, storage: BaseStorage, reranker = None):
+    def __init__(self, ranker: BaseRanker, storage: BaseStorage, reranker=None, cache=None):
         self.ranker = ranker
         self.storage = storage
         self.reranker = reranker
+        self.cache = cache
         self.metrics = LatencyTracker()
 
     def index(self, source: BaseSource, max_docs: int = 1000) -> None:
@@ -35,6 +36,17 @@ class IndexEngine:
         """ Search the index and return top k results, optionally with reranking """
         t0 = time.perf_counter()
         
+        # 0. Check Semantic Cache
+        query_embedding = None
+        if self.cache and hasattr(self.ranker, 'embedder'):
+            # We need the embedding to check the cache
+            query_embedding = self.ranker.embedder.embed_query(query)
+            cached_results = self.cache.get(query_embedding)
+            if cached_results:
+                latency_ms = (time.perf_counter() - t0) * 1000
+                self.metrics.record(latency_ms)
+                return cached_results[:top_k]
+
         if rerank and self.reranker:
             # Stage 1: Fast Retrieval (fetch more candidates than needed)
             candidates = self.ranker.search(query, top_k * 5)
@@ -43,6 +55,10 @@ class IndexEngine:
         else:
             results = self.ranker.search(query, top_k)
             
+        # Update Cache
+        if self.cache and query_embedding is not None:
+             self.cache.set(query_embedding, results)
+
         latency_ms = (time.perf_counter() - t0) * 1000
         self.metrics.record(latency_ms)
         return results
