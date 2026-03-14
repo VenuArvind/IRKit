@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  # Simple Redis shard example
+  redis-shard-0:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --save "" --appendonly no
+
+  # Optional second shard to demonstrate consistent hashing
+  redis-shard-1:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    command: redis-server --save "" --appendonly no
+
+  irkit-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MAX_DOCS=100
+      - REDIS_NODES=redis-shard-0:6379,redis-shard-1:6379
+    depends_on:
+      - redis-shard-0
+      - redis-shard-1

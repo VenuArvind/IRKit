@@ -45,6 +45,6 @@ irkit = "cli.main:app"
 packages = ["irkit", "cli"]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/irkit"
-Documentation = "https://github.com/yourusername/irkit#readme"
-Repository = "https://github.com/yourusername/irkit"
+Homepage = "https://github.com/VenuArvind/IRKit"
+Documentation = "https://github.com/VenuArvind/IRKit#readme"
+Repository = "https://github.com/VenuArvind/IRKit"

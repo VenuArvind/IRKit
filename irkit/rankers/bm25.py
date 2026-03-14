@@ -18,8 +18,19 @@ class BM25Ranker(BaseRanker):
 
     def search(self, query: str, top_k: int = 10) -> List[SearchResult]:
         if not self.bm25:
-            print("BM25 not indexed. Please index documents first.")
-            return []
+            raise RuntimeError("BM25 not indexed. Please index documents first.")
+        
+        # Handle empty query
+        if not query.strip():
+            return [
+                SearchResult(
+                    doc_id=doc['id'],
+                    score=0.0,
+                    title=doc['title'],
+                    snippet=doc['text'][0:200] + "...",
+                    metadata=doc.get('metadata', {})
+                ) for doc in self.doc_store[:top_k]
+            ]
         
         tokenized_query = query.lower().split()
         
