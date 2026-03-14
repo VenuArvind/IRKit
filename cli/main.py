@@ -25,15 +25,11 @@ def serve(
     engine = IndexEngine(ranker=ranker, storage=MemoryStorage(), reranker=reranker)
     
     # 2. Select and ingest data
-    if source == "arxiv":
-        data_source = ArxivSource()
-    elif source == "wikipedia":
-        data_source = WikipediaSource(category="Artificial_intelligence")
-    elif source == "news":
-        data_source = NewsSource()
-    else:
-        console.print(f"[bold red]Unknown source: {source}. Defaulting to arxiv.[/bold red]")
-        data_source = ArxivSource()
+    try:
+        data_source = get_source(source, max_docs=max_docs)
+    except Exception as e:
+        console.print(f"[bold red]Error resolving source '{source}': {e}. Defaulting to arxiv.[/bold red]")
+        data_source = ArXivSource(max_docs=max_docs)
 
     engine.index(data_source, max_docs=max_docs)
     

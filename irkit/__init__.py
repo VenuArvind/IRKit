@@ -3,8 +3,11 @@ from irkit.core.metrics import LatencyTracker
 from irkit.sources.base import Document, BaseSource
 from irkit.sources.arxiv import ArXivSource
 from irkit.sources.wikipedia import WikipediaSource
-from irkit.sources.custom import CustomSource
+from irkit.sources.file import FileSource
+from irkit.sources.directory import DirectorySource
+from irkit.sources.web import WebSource
 from irkit.sources.news import NewsSource
+from irkit.sources.factory import get_source
 from irkit.embedders.base import BaseEmbedder
 from irkit.embedders.sentence_transformers import SentenceTransformerEmbedder
 from irkit.embedders.openai import OpenAIEmbedder
@@ -19,7 +22,8 @@ from irkit.storage.redis import RedisStorage
 
 __all__ = [
     "IndexEngine", "LatencyTracker", "Document", "BaseSource", "ArXivSource",
-    "WikipediaSource", "CustomSource", "NewsSource", "BaseEmbedder", "SentenceTransformerEmbedder",
+    "WikipediaSource", "FileSource", "DirectorySource", "WebSource", "NewsSource", "get_source",
+    "BaseEmbedder", "SentenceTransformerEmbedder",
     "OpenAIEmbedder", "BaseRanker", "SearchResult", "BM25Ranker", "SemanticRanker",
     "HybridRanker", "CrossEncoderRanker", "BaseStorage", "InMemoryStorage", "RedisStorage"
 ]
