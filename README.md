@@ -27,7 +27,7 @@ Experience the engine visually through our React-powered search interface.
 
 ![IRKit Demo](https://raw.githubusercontent.com/VenuArvind/IRKit/main/demo/src/assets/hero.png)
 
-1. **Start the API**: `irkit serve --max-docs 500`
+1. **Start the API**: `irkit serve --max-docs 500 --source arxiv`
 2. **Start the UI**: `cd demo && npm run dev`
 3. **Open**: `http://localhost:5173`
 
@@ -35,17 +35,25 @@ Experience the engine visually through our React-powered search interface.
 
 ## 📊 Benchmarks
 
-*Verified actual numbers: 500 ArXiv papers indexed on M3 Pro MacBook.*
+*Verified actual numbers (M3 Pro MacBook).*
 
+### 📚 Scientific (ArXiv - 500 docs)
 | Ranker | p50 (ms) | p95 (ms) | p99 (ms) |
 |--------|----------|----------|----------|
-| **BM25** | 0.09 | 0.14 | 0.26 |
-| **Semantic** | 3.24 | 11.41 | 270.07 |
-| **Hybrid (RRF)** | 3.48 | 3.86 | 4.41 |
+| **Hybrid** | 3.48 | 3.86 | 4.41 |
 | **Reranked** | 73.86 | 125.66 | 235.05 |
 
-> [!NOTE]
-> Latency verified using the internal benchmark suite on local hardware. Higher P99 on first query reflects model loading/warmup.
+### 📖 General (Wikipedia - 100 docs)
+| Ranker | p50 (ms) | p95 (ms) |
+|--------|----------|----------|
+| **Hybrid** | 3.34 | 17.53 |
+| **Reranked** | 43.39 | 63.03 |
+
+### 📰 Real-time (News RSS - 100 docs)
+| Ranker | p50 (ms) | p95 (ms) |
+|--------|----------|----------|
+| **Hybrid** | 3.34 | 4.92 |
+| **Reranked** | 56.06 | 96.37 |
 
 ---
 
@@ -58,9 +66,6 @@ We maintain high standards for search accuracy and system reliability.
 pytest tests/ -v --cov=irkit
 ```
 
-- **Unit Tests**: Verified Ranking logic, Consistent Hashing, and Metric calculations.
-- **Integration Tests**: End-to-end `Source -> Indexer -> Storage -> Ranker` validation.
-
 ---
 
 ## 🏗️ Architecture
@@ -71,27 +76,6 @@ IRKit is built on four core pillars:
 2.  **Embedders**: Generate vector embeddings using local (HuggingFace) or API (OpenAI) models.
 3.  **Rankers**: Search using traditional keywords (BM25) or conceptual meaning (Semantic).
 4.  **Storage**: Persist documents in memory or distributed Redis clusters.
-
----
-
-## 📖 Python Usage
-
-```python
-from irkit import IndexEngine, ArxivSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage
-
-# 1. Initialize Components
-embedder = HuggingFaceEmbedder()
-ranker = HybridRanker(rankers=[BM25Ranker(), SemanticRanker(embedder)])
-engine = IndexEngine(ranker=ranker, storage=MemoryStorage())
-
-# 2. Index Data
-engine.index(ArxivSource(), max_docs=50)
-
-# 3. Search
-results = engine.search("quantum computing")
-for res in results:
-    print(f"[{res.score:.4f}] {res.title}")
-```
 
 ---
 
