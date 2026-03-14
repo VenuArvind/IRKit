@@ -1,7 +1,9 @@
+import time
 from typing import List, Optional
 from irkit.sources.base import BaseSource, Document
 from irkit.rankers.base import BaseRanker, SearchResult
 from irkit.storage.base import BaseStorage
+from irkit.core.metrics import LatencyTracker
 
 class IndexEngine:
     """
@@ -12,6 +14,7 @@ class IndexEngine:
     def __init__(self, ranker: BaseRanker, storage: BaseStorage):
         self.ranker = ranker
         self.storage = storage
+        self.metrics = LatencyTracker()
 
     def index(self, source: BaseSource, max_docs: int = 1000) -> None:
         """ Fetch documents from source, save to storage, and then index to ranker """
@@ -29,7 +32,18 @@ class IndexEngine:
     
     def search(self, query: str, top_k : int = 10) -> List[SearchResult]:
         """ Search the index and return top k results """
-        return self.ranker.search(query, top_k)
+        t0 = time.perf_counter()
+        results = self.ranker.search(query, top_k)
+        latency_ms = (time.perf_counter() - t0) * 1000
+        self.metrics.record(latency_ms)
+        return results
+
+    def stats(self) ->dict:
+        """ Return performance statistics """
+        return {
+            "total_docs": self.storage.count(),
+            "latency": self.metrics.percentiles()
+        }
     
     def get_document(self, doc_id: str) -> Optional[Document]:
         """ Retrieve a document from storage by its ID """
