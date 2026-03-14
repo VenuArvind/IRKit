@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 RUN pip install -e .
 
-EXPOSE 8000
+EXPOSE 7860
 
 ENV PYTHONPATH=/app
 
-CMD ["python3", "cli/main.py", "serve", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python3", "cli/main.py", "serve", "--host", "0.0.0.0", "--port", "7860"]
