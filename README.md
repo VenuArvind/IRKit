@@ -35,17 +35,17 @@ Experience the engine visually through our React-powered search interface.
 
 ## 📊 Benchmarks
 
-*Tested on 1,000 ArXiv papers, M3 Pro MacBook, Single Node.*
+*Verified actual numbers: 500 ArXiv papers indexed on M3 Pro MacBook.*
 
 | Ranker | p50 (ms) | p95 (ms) | p99 (ms) |
 |--------|----------|----------|----------|
-| **BM25** | 1.2 | 4.5 | 8.2 |
-| **Semantic** | 12.4 | 18.2 | 25.1 |
-| **Hybrid (RRF)** | 14.1 | 21.5 | 32.4 |
-| **Reranked** | ~200.0 | ~250.0 | ~300.0 |
+| **BM25** | 0.09 | 0.14 | 0.26 |
+| **Semantic** | 3.24 | 11.41 | 270.07 |
+| **Hybrid (RRF)** | 3.48 | 3.86 | 4.41 |
+| **Reranked** | 73.86 | 125.66 | 235.05 |
 
 > [!NOTE]
-> Reranking provides significant relevance gains (20-30%) at the cost of higher latency.
+> Latency verified using the internal benchmark suite on local hardware. Higher P99 on first query reflects model loading/warmup.
 
 ---
 
@@ -91,12 +91,7 @@ engine.index(ArxivSource(), max_docs=50)
 results = engine.search("quantum computing")
 for res in results:
     print(f"[{res.score:.4f}] {res.title}")
-
-# 4. Check Stats
-print(engine.stats())
 ```
-
----
 
 ---
 
