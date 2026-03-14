@@ -11,9 +11,10 @@ class IndexEngine:
     Source -> Storage -> Ranker pipeline
     """
 
-    def __init__(self, ranker: BaseRanker, storage: BaseStorage):
+    def __init__(self, ranker: BaseRanker, storage: BaseStorage, reranker = None):
         self.ranker = ranker
         self.storage = storage
+        self.reranker = reranker
         self.metrics = LatencyTracker()
 
     def index(self, source: BaseSource, max_docs: int = 1000) -> None:
@@ -30,10 +31,18 @@ class IndexEngine:
 
         print(f"[IndexEngine] Indexed {len(docs_to_index)} documents")
     
-    def search(self, query: str, top_k : int = 10) -> List[SearchResult]:
-        """ Search the index and return top k results """
+    def search(self, query: str, top_k: int = 10, rerank: bool = False) -> List[SearchResult]:
+        """ Search the index and return top k results, optionally with reranking """
         t0 = time.perf_counter()
-        results = self.ranker.search(query, top_k)
+        
+        if rerank and self.reranker:
+            # Stage 1: Fast Retrieval (fetch more candidates than needed)
+            candidates = self.ranker.search(query, top_k * 5)
+            # Stage 2: High-Precision Reranking
+            results = self.reranker.rerank(query, candidates)[:top_k]
+        else:
+            results = self.ranker.search(query, top_k)
+            
         latency_ms = (time.perf_counter() - t0) * 1000
         self.metrics.record(latency_ms)
         return results

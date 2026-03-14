@@ -1,7 +1,7 @@
 import typer
 import uvicorn
 from rich.console import Console
-from irkit import IndexEngine, ArxivSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage
+from irkit import IndexEngine, ArxivSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage, CrossEncoderRanker
 from irkit.serve.api import app as fastapi_app, set_engine
 
 app = typer.Typer(help="irkit — Distributed Hybrid Information Retrieval Toolkit")
@@ -20,7 +20,8 @@ def serve(
     
     embedder = HuggingFaceEmbedder()
     ranker = HybridRanker(rankers=[BM25Ranker(), SemanticRanker(embedder)])
-    engine = IndexEngine(ranker=ranker, storage=MemoryStorage())
+    reranker = CrossEncoderRanker()
+    engine = IndexEngine(ranker=ranker, storage=MemoryStorage(), reranker=reranker)
     
     # 2. Ingest some initial data
     engine.index(ArxivSource(), max_docs=max_docs)

@@ -29,7 +29,8 @@ class SearchResponse(BaseModel):
 @app.get("/search", response_model=SearchResponse)
 def search(
     q: str = Query(..., description="Search query"),
-    top_k: int = Query(10, ge=1, le=100)
+    top_k: int = Query(10, ge=1, le=100),
+    rerank: bool = Query(False, description="Enable advanced reranking (Cross-Encoder)")
 ):
     """
     Performs a search using the IRKit engine.
@@ -38,7 +39,7 @@ def search(
         raise HTTPException(status_code=503, detail="Search engine not initialized")
 
     t0 = time.perf_counter()
-    results = _engine.search(q, top_k=top_k)
+    results = _engine.search(q, top_k=top_k, rerank=rerank)
     latency_ms = (time.perf_counter() - t0) * 1000
 
     return {

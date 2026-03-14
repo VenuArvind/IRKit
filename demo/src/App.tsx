@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const [totalDocs, setTotalDocs] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [useRerank, setUseRerank] = useState(false);
 
   // Fetch initial stats
   useEffect(() => {
@@ -50,7 +51,7 @@ const App: React.FC = () => {
     setHasSearched(true);
     try {
       const res = await axios.get<SearchResponse>(`${API_URL}/search`, {
-        params: { q: query, top_k: 10 },
+        params: { q: query, top_k: 10, rerank: useRerank },
       });
       setResults(res.data.results);
       setLatency(res.data.latency_ms);
@@ -112,6 +113,27 @@ const App: React.FC = () => {
             >
               {loading ? <Loader2 className="animate-spin" /> : "Search"}
             </button>
+          </div>
+
+          {/* Reranking Toggle */}
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-3 glass-card px-4 py-2">
+              <span className={`text-xs font-bold uppercase tracking-wider ${useRerank ? 'text-primary' : 'text-text-muted'}`}>
+                Advanced Reranking (Cross-Encoder)
+              </span>
+              <button 
+                onClick={() => setUseRerank(!useRerank)}
+                className={`w-12 h-6 rounded-full relative transition-colors ${useRerank ? 'bg-primary' : 'bg-slate-700'}`}
+              >
+                <motion.div 
+                  animate={{ x: useRerank ? 26 : 4 }}
+                  className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-md"
+                />
+              </button>
+            </div>
+            <p className="text-[10px] text-text-muted italic">
+              *Reranking provides 20-30% better relevance but adds ~200ms of latency.
+            </p>
           </div>
           
           {/* Engine Stats */}

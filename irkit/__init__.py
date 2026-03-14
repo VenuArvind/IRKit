@@ -11,6 +11,7 @@ from irkit.rankers.base import BaseRanker, SearchResult
 from irkit.rankers.bm25 import BM25Ranker
 from irkit.rankers.semantic import SemanticRanker
 from irkit.rankers.hybrid import HybridRanker
+from irkit.rankers.reranker import CrossEncoderRanker
 from irkit.storage.base import BaseStorage
 from irkit.storage.memory import MemoryStorage
 from irkit.storage.redis import RedisStorage
@@ -19,5 +20,5 @@ __all__ = [
     "IndexEngine", "LatencyTracker", "Document", "BaseSource", "ArxivSource",
     "WikipediaSource", "CustomSource", "BaseEmbedder", "HuggingFaceEmbedder",
     "OpenAIEmbedder", "BaseRanker", "SearchResult", "BM25Ranker", "SemanticRanker",
-    "HybridRanker", "BaseStorage", "MemoryStorage", "RedisStorage"
+    "HybridRanker", "CrossEncoderRanker", "BaseStorage", "MemoryStorage", "RedisStorage"
 ]
