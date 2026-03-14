@@ -4,6 +4,7 @@ from irkit.sources.base import Document, BaseSource
 from irkit.sources.arxiv import ArxivSource
 from irkit.sources.wikipedia import WikipediaSource
 from irkit.sources.custom import CustomSource
+from irkit.sources.news import NewsSource
 from irkit.embedders.base import BaseEmbedder
 from irkit.embedders.huggingface import HuggingFaceEmbedder
 from irkit.embedders.openai import OpenAIEmbedder
@@ -18,7 +19,7 @@ from irkit.storage.redis import RedisStorage
 
 __all__ = [
     "IndexEngine", "LatencyTracker", "Document", "BaseSource", "ArxivSource",
-    "WikipediaSource", "CustomSource", "BaseEmbedder", "HuggingFaceEmbedder",
+    "WikipediaSource", "CustomSource", "NewsSource", "BaseEmbedder", "HuggingFaceEmbedder",
     "OpenAIEmbedder", "BaseRanker", "SearchResult", "BM25Ranker", "SemanticRanker",
     "HybridRanker", "CrossEncoderRanker", "BaseStorage", "MemoryStorage", "RedisStorage"
 ]
