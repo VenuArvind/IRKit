@@ -1,22 +1,22 @@
 import time
 import numpy as np
-from irkit import IndexEngine, ArxivSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage, CrossEncoderRanker
+from irkit import IndexEngine, ArXivSource, HybridRanker, BM25Ranker, SemanticRanker, SentenceTransformerEmbedder, InMemoryStorage, CrossEncoderRanker
 
 def run_benchmark():
     print("🚀 Starting Internal Benchmark...")
     
     # 1. Setup Engine
-    embedder = HuggingFaceEmbedder()
+    embedder = SentenceTransformerEmbedder()
     bm25 = BM25Ranker()
     semantic = SemanticRanker(embedder)
     hybrid = HybridRanker(rankers=[bm25, semantic])
     reranker = CrossEncoderRanker()
     
-    engine = IndexEngine(ranker=hybrid, storage=MemoryStorage(), reranker=reranker)
+    engine = IndexEngine(ranker=hybrid, storage=InMemoryStorage(), reranker=reranker)
     
     # 2. Index Data
     print("📥 Indexing 500 ArXiv papers (this may take a minute)...")
-    engine.index(ArxivSource(), max_docs=500)
+    engine.index(ArXivSource(), max_docs=500)
     
     queries = [
         "transformer models", "quantum computing", "climate change machine learning",

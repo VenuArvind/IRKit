@@ -1,7 +1,7 @@
 import typer
 import uvicorn
 from rich.console import Console
-from irkit import IndexEngine, ArxivSource, WikipediaSource, NewsSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage, CrossEncoderRanker
+from irkit import IndexEngine, ArXivSource, WikipediaSource, NewsSource, HybridRanker, BM25Ranker, SemanticRanker, SentenceTransformerEmbedder, InMemoryStorage, CrossEncoderRanker
 from irkit.serve.api import app as fastapi_app, set_engine
 
 app = typer.Typer(help="irkit — Distributed Hybrid Information Retrieval Toolkit")

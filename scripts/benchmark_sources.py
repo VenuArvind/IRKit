@@ -1,18 +1,18 @@
 import time
 import numpy as np
-from irkit import IndexEngine, ArxivSource, WikipediaSource, NewsSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage, CrossEncoderRanker
+from irkit import IndexEngine, ArXivSource, WikipediaSource, NewsSource, HybridRanker, BM25Ranker, SemanticRanker, SentenceTransformerEmbedder, InMemoryStorage, CrossEncoderRanker
 
 def run_source_benchmark(source_name, source_obj):
     print(f"\n🚀 Starting Benchmark for: {source_name}")
     
     # Setup Engine
-    embedder = HuggingFaceEmbedder()
+    embedder = SentenceTransformerEmbedder()
     bm25 = BM25Ranker()
     semantic = SemanticRanker(embedder)
     hybrid = HybridRanker(rankers=[bm25, semantic])
     reranker = CrossEncoderRanker()
     
-    engine = IndexEngine(ranker=hybrid, storage=MemoryStorage(), reranker=reranker)
+    engine = IndexEngine(ranker=hybrid, storage=InMemoryStorage(), reranker=reranker)
     
     # 2. Index Data
     print(f"📥 Indexing 100 docs from {source_name}...")

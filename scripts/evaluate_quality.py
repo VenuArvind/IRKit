@@ -1,23 +1,23 @@
 import time
 from typing import List, Dict, Set
-from irkit import IndexEngine, ArxivSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage, CrossEncoderRanker
+from irkit import IndexEngine, ArXivSource, HybridRanker, BM25Ranker, SemanticRanker, SentenceTransformerEmbedder, InMemoryStorage, CrossEncoderRanker
 from irkit.core.evaluation import calculate_mrr, calculate_ndcg
 
 def run_evaluation_suite():
     print("🔬 Starting Search Quality Evaluation...")
     
     # 1. Setup Engine
-    embedder = HuggingFaceEmbedder()
+    embedder = SentenceTransformerEmbedder()
     bm25 = BM25Ranker()
     semantic = SemanticRanker(embedder)
     hybrid = HybridRanker(rankers=[bm25, semantic])
     reranker = CrossEncoderRanker()
     
-    engine = IndexEngine(ranker=hybrid, storage=MemoryStorage(), reranker=reranker)
+    engine = IndexEngine(ranker=hybrid, storage=InMemoryStorage(), reranker=reranker)
     
     # 2. Index Data
     print("📥 Indexing 200 ArXiv papers...")
-    engine.index(ArxivSource(), max_docs=200)
+    engine.index(ArXivSource(), max_docs=200)
     
     # 3. Define Ground Truth (Gold Standard) based on actual ArXiv IDs
     benchmarks = {

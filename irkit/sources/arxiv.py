@@ -2,7 +2,7 @@ from datasets import load_dataset
 from typing import Iterator
 from irkit.sources.base import BaseSource, Document
 
-class ArxivSource(BaseSource):
+class ArXivSource(BaseSource):
     """ Loads papers from ArXiv (using gfissore/arxiv-abstracts-2021) """
     
     def __init__(self, category_filter: str = None, max_docs: int = 1000):

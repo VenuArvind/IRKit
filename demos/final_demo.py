@@ -1,13 +1,13 @@
 """
 IRKit Season Finale: Semantic ArXiv Search Demo
 """
-from irkit.sources.arxiv import ArxivSource
-from irkit.embedders.huggingface import HuggingFaceEmbedder
+from irkit.sources.arxiv import ArXivSource
+from irkit.embedders.sentence_transformers import SentenceTransformerEmbedder
 from irkit.rankers.hybrid import HybridRanker
 from irkit.rankers.bm25 import BM25Ranker
 from irkit.rankers.semantic import SemanticRanker
-from irkit.storage.memory import MemoryStorage
-from irkit.core.index import IndexEngine
+from irkit.storage.memory import InMemoryStorage
+from irkit.core.engine import IndexEngine
 
 def main():
     print("--- 🚀 Welcome to the IRKit ArXiv Search Demo 🚀 ---")

@@ -1,8 +1,8 @@
 import pytest
-from irkit.core.index import IndexEngine
+from irkit.core.engine import IndexEngine
 from irkit.sources.custom import CustomSource
 from irkit.rankers.bm25 import BM25Ranker
-from irkit.storage.memory import MemoryStorage
+from irkit.storage.memory import InMemoryStorage
 
 def test_engine_end_to_end():
     """ Verify the full flow: Custom CSV Source -> Memory Storage -> BM25 Ranker """
@@ -10,7 +10,7 @@ def test_engine_end_to_end():
     # 1. Setup components
     # Assuming tests/dummy_data.csv exists (from previous file listing)
     source = CustomSource(file_path="tests/dummy_data.csv")
-    storage = MemoryStorage()
+    storage = InMemoryStorage()
     ranker = BM25Ranker()
     engine = IndexEngine(ranker=ranker, storage=storage)
     

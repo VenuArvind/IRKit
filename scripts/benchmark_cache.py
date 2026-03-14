@@ -1,21 +1,21 @@
 import time
 import numpy as np
-from irkit import IndexEngine, ArxivSource, HybridRanker, BM25Ranker, SemanticRanker, HuggingFaceEmbedder, MemoryStorage
+from irkit import IndexEngine, ArXivSource, HybridRanker, BM25Ranker, SemanticRanker, SentenceTransformerEmbedder, InMemoryStorage
 from irkit.core.cache import SemanticCache
 
 def run_cache_benchmark():
     print("🚀 Starting Semantic Cache Benchmark...")
     
     # 1. Setup Engine with Cache
-    embedder = HuggingFaceEmbedder()
+    embedder = SentenceTransformerEmbedder()
     ranker = HybridRanker(rankers=[BM25Ranker(), SemanticRanker(embedder)])
     cache = SemanticCache(threshold=0.9) # More generous for semantic test
     
-    engine = IndexEngine(ranker=ranker, storage=MemoryStorage(), cache=cache)
+    engine = IndexEngine(ranker=ranker, storage=InMemoryStorage(), cache=cache)
     
     # 2. Index Data
     print("📥 Indexing 100 ArXiv papers...")
-    engine.index(ArxivSource(), max_docs=100)
+    engine.index(ArXivSource(), max_docs=100)
     
     query = "transformer models for NLP"
     

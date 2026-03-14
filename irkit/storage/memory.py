@@ -2,7 +2,7 @@ from typing import List, Optional, Dict
 from irkit.sources.base import Document
 from irkit.storage.base import BaseStorage
 
-class MemoryStorage(BaseStorage):
+class InMemoryStorage(BaseStorage):
     """
     In-memory document storage
     Fast, but not persistent
