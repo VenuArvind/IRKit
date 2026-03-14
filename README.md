@@ -4,20 +4,19 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
 
-**IRKit** is a modular, pluggable Python SDK designed for building high-performance search systems. It combines the power of **Keyword Search (BM25)** and **Semantic Search (Vector Embeddings)** into a single, cohesive engine.
+**IRKit** is a modular, high-performance Information Retrieval (IR) library built for the modern era of Semantic Search. It combines **BM25 Keyword Search** with **Vector Embeddings** and **Cross-Encoder Reranking** to provide "Google-tier" search precision.
 
 ---
 
 ## ✨ Key Features
 
-- **🔍 Hybrid Search**: Combines BM25 and Semantic search using **Reciprocal Rank Fusion (RRF)** for superior relevance.
-- **🌐 Pluggable Architecture**: Easily swap between different Data Sources, Embedders, Rankers, and Storage backends.
-- **⚡ Performance First**: Integrated **Latency Metrics** (P50, P95, P99) to track search speeds in real-time.
-- **💎 Distributed Sharding**: Scalable persistent storage using **Consistent Hashing** (ready for Redis/Postgres).
-- **🚀 Web-Ready**: Built-in **FastAPI** serving layer with auto-generated Swagger documentation.
-- **💻 Modern CLI**: Professional interactive terminal interface powered by **Typer** and **Rich**.
-- **🎨 Search Demo**: A beautiful React-based frontend with real-time "Advanced Reranking" toggles.
+- **🔍 Hybrid Search**: Combines BM25 and Semantic search using **Reciprocal Rank Fusion (RRF)**.
+- **⚡ Semantic Caching**: Vector-based query caching that skips redundant model inference (8.2x faster search).
 - **🧠 Two-Stage Retrieval**: State-of-the-art pipeline using **Cross-Encoders** (MiniLM) for high-precision document re-scoring.
+- **📊 Quality Metrics**: Built-in support for **MRR (Mean Reciprocal Rank)** and **nDCG (Normalized Discounted Cumulative Gain)**.
+- **⚡ Performance First**: Integrated **Latency Metrics** (P50, P95, P99) and automated benchmark suites.
+- **🌐 Pluggable Architecture**: Easily swap between different Data Sources (ArXiv, Wikipedia, RSS), Embedders, and Storage modes.
+- **🚀 Web-Ready**: Built-in **FastAPI** serving layer with a beautiful **React-powered Demo UI**.
 
 ---
 
@@ -27,55 +26,53 @@ Experience the engine visually through our React-powered search interface.
 
 ![IRKit Demo](https://raw.githubusercontent.com/VenuArvind/IRKit/main/demo/src/assets/hero.png)
 
-1. **Start the API**: `irkit serve --max-docs 500 --source arxiv`
+1. **Start the API**: `irkit serve --source arxiv --max-docs 500`
 2. **Start the UI**: `cd demo && npm run dev`
 3. **Open**: `http://localhost:5173`
 
 ---
 
-## 📊 Benchmarks
+## 📊 Benchmarks & Quality
 
-*Verified actual numbers (M3 Pro MacBook).*
+*Verified actual numbers (M5 MacBook Pro).*
 
-### 📚 Scientific (ArXiv - 500 docs)
-| Ranker | p50 (ms) | p95 (ms) | p99 (ms) |
-|--------|----------|----------|----------|
-| **Hybrid** | 3.48 | 3.86 | 4.41 |
-| **Reranked** | 73.86 | 125.66 | 235.05 |
+### ⚡ Search Speed (Semantic Caching)
+| Search Type | Latency (ms) | Speedup |
+|-------------|--------------|---------|
+| **Cold Search** | 27.61 | 1.0x |
+| **Semantic Cache (Similar Query)** | 19.14 | **1.4x** |
+| **Hot Cache (Exact Match)** | 3.36 | **8.2x** |
 
-### 📖 General (Wikipedia - 100 docs)
-| Ranker | p50 (ms) | p95 (ms) |
-|--------|----------|----------|
-| **Hybrid** | 3.34 | 17.53 |
-| **Reranked** | 43.39 | 63.03 |
+### 🔬 Scientific Precision (ArXiv - 200 docs)
+| Ranking Mode | Mean MRR | Mean nDCG@10 |
+|--------------|----------|--------------|
+| BM25 Only | 0.8750 | 1.0000 |
+| Semantic Only | 1.0000 | 1.0000 |
+| **Hybrid + Reranking** | **1.0000** | **1.0000** |
 
-### 📰 Real-time (News RSS - 100 docs)
-| Ranker | p50 (ms) | p95 (ms) |
-|--------|----------|----------|
-| **Hybrid** | 3.34 | 4.92 |
-| **Reranked** | 56.06 | 96.37 |
+---
+
+## 🏗️ Technical Architecture
+
+IRKit is built on four core pillars:
+
+1.  **Sources**: Native ingestors for ArXiv, Wikipedia, News RSS, and Local Files.
+2.  **Embedders**: Support for local HuggingFace models or OpenAI API.
+3.  **Rankers**: Advanced relevance algorithms including BM25, Semantic FAISS, Hybrid RRF, and Cross-Encoder Reranking.
+4.  **Core Services**: Latency tracking, Semantic Caching, and Scientific Evaluation modules.
 
 ---
 
 ## 🧪 Testing
 
-We maintain high standards for search accuracy and system reliability.
-
 ```bash
 # Run full test suite with coverage
 pytest tests/ -v --cov=irkit
+
+# Run performance & quality benchmarks
+python3 scripts/evaluate_quality.py
+python3 scripts/benchmark_cache.py
 ```
-
----
-
-## 🏗️ Architecture
-
-IRKit is built on four core pillars:
-
-1.  **Sources**: Ingest data from ArXiv, Wikipedia, or your own local JSON/CSV files.
-2.  **Embedders**: Generate vector embeddings using local (HuggingFace) or API (OpenAI) models.
-3.  **Rankers**: Search using traditional keywords (BM25) or conceptual meaning (Semantic).
-4.  **Storage**: Persist documents in memory or distributed Redis clusters.
 
 ---
 
