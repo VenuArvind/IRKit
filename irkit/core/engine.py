@@ -4,6 +4,7 @@ from irkit.sources.base import BaseSource, Document
 from irkit.rankers.base import BaseRanker, SearchResult
 from irkit.storage.base import BaseStorage
 from irkit.core.metrics import LatencyTracker
+from irkit.core.profiler import profile_engine
 
 class IndexEngine:
     """
@@ -18,6 +19,7 @@ class IndexEngine:
         self.cache = cache
         self.metrics = LatencyTracker()
 
+    @profile_engine("indexing")
     def index(self, source: BaseSource, max_docs: int = 1000) -> None:
         """ Fetch documents from source, save to storage, and then index to ranker """
         print(f"[IndexEngine] Starting indexing from {source.__class__.__name__}...")
@@ -32,6 +34,7 @@ class IndexEngine:
 
         print(f"[IndexEngine] Indexed {len(docs_to_index)} documents")
     
+    @profile_engine("search")
     def search(self, query: str, top_k: int = 10, rerank: bool = False) -> List[SearchResult]:
         """ Search the index and return top k results, optionally with reranking """
         t0 = time.perf_counter()

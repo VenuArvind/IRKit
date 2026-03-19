@@ -12,17 +12,19 @@ def serve(
     host: str = "0.0.0.0",
     port: int = 8000,
     max_docs: int = 100,
-    source: str = typer.Option("arxiv", help="Data source: arxiv, wikipedia, news")
+    source: str = typer.Option("arxiv", help="Data source: arxiv, wikipedia, news"),
+    quantization: Optional[str] = typer.Option(None, help="Quantization mode: sq8, pq, or None")
 ):
     """
     Start the IRKit Search Server.
     """
     console.print(f"[bold green]🚀 Starting IRKit Search Server on {host}:{port}...[/bold green]")
     
-    embedder = HuggingFaceEmbedder()
-    ranker = HybridRanker(rankers=[BM25Ranker(), SemanticRanker(embedder)])
+    embedder = SentenceTransformerEmbedder()
+    semantic_ranker = SemanticRanker(embedder, quantization=quantization)
+    ranker = HybridRanker(rankers=[BM25Ranker(), semantic_ranker])
     reranker = CrossEncoderRanker()
-    engine = IndexEngine(ranker=ranker, storage=MemoryStorage(), reranker=reranker)
+    engine = IndexEngine(ranker=ranker, storage=InMemoryStorage(), reranker=reranker)
     
     # 2. Select and ingest data
     try:

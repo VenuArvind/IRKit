@@ -1,0 +1,76 @@
+
+============================================================
+RUNNING BENCHMARK: Mode=BASELINE (float32)
+============================================================
+[IndexEngine] Starting indexing from MockSource...
+ [SemanticRanker] Indexed 10000 documents (Quantization: None).
+[IndexEngine] Indexed 10000 documents
+
+🚀 --- Profiler Report: INDEXING ---
+⏱️  Duration:         0.087285 s
+💻 CPU Time (User):   0.080036 s
+🖥️  CPU Time (System): 0.007174 s
+🧠 Peak Heap Memory:  48.94 MB
+🏠 Peak RSS Memory:   530.05 MB
+----------------------------------
+
+🚀 --- Profiler Report: SEARCH ---
+⏱️  Duration:         0.001305 s
+💻 CPU Time (User):   0.000918 s
+🖥️  CPU Time (System): 0.000388 s
+🧠 Peak Heap Memory:  0.00 MB
+🏠 Peak RSS Memory:   530.44 MB
+--------------------------------
+Index size: 10000 documents
+Search results returned: 5
+
+============================================================
+RUNNING BENCHMARK: Mode=sq8
+============================================================
+[IndexEngine] Starting indexing from MockSource...
+ [SemanticRanker] Indexed 10000 documents (Quantization: sq8).
+[IndexEngine] Indexed 10000 documents
+
+🚀 --- Profiler Report: INDEXING ---
+⏱️  Duration:         0.057837 s
+💻 CPU Time (User):   0.054492 s
+🖥️  CPU Time (System): 0.003306 s
+🧠 Peak Heap Memory:  62.97 MB
+🏠 Peak RSS Memory:   559.78 MB
+----------------------------------
+
+🚀 --- Profiler Report: SEARCH ---
+⏱️  Duration:         0.003065 s
+💻 CPU Time (User):   0.002787 s
+🖥️  CPU Time (System): 0.000278 s
+🧠 Peak Heap Memory:  29.33 MB
+🏠 Peak RSS Memory:   559.83 MB
+--------------------------------
+Index size: 10000 documents
+Search results returned: 5
+
+============================================================
+RUNNING BENCHMARK: Mode=pq
+============================================================
+[IndexEngine] Starting indexing from MockSource...
+ [PQ] Training completed. Generated 8 codebooks, each with 256 centroids.
+ [SemanticRanker] Indexed 10000 documents (Quantization: pq).
+[IndexEngine] Indexed 10000 documents
+
+🚀 --- Profiler Report: INDEXING ---
+⏱️  Duration:         0.504988 s
+💻 CPU Time (User):   0.501772 s
+🖥️  CPU Time (System): 0.002704 s
+🧠 Peak Heap Memory:  48.31 MB
+🏠 Peak RSS Memory:   560.14 MB
+----------------------------------
+
+🚀 --- Profiler Report: SEARCH ---
+⏱️  Duration:         0.000613 s
+💻 CPU Time (User):   0.000596 s
+🖥️  CPU Time (System): 0.000017 s
+🧠 Peak Heap Memory:  0.24 MB
+🏠 Peak RSS Memory:   560.16 MB
+--------------------------------
+Index size: 10000 documents
+Search results returned: 5

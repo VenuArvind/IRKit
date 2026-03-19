@@ -25,6 +25,8 @@ class SearchResponse(BaseModel):
     results: List[dict]
     latency_ms: float
     total_docs: int
+    system_metrics: dict
+    quantization_mode: Optional[str] = None
 
 @app.get("/search", response_model=SearchResponse)
 def search(
@@ -38,15 +40,27 @@ def search(
     if _engine is None:
         raise HTTPException(status_code=503, detail="Search engine not initialized")
 
-    t0 = time.perf_counter()
+    from irkit.core.profiler import last_metrics
+    
+    # The search call is already decorated with @profile_engine
     results = _engine.search(q, top_k=top_k, rerank=rerank)
-    latency_ms = (time.perf_counter() - t0) * 1000
+    
+    # Detect quantization mode
+    q_mode = "none"
+    if hasattr(_engine.ranker, 'quantization'):
+        q_mode = _engine.ranker.quantization or "none"
+    elif hasattr(_engine.ranker, 'rankers'):
+         for r in _engine.ranker.rankers:
+             if hasattr(r, 'quantization'):
+                 q_mode = r.quantization or "none"
 
     return {
         "query": q,
         "results": [r.__dict__ for r in results],
-        "latency_ms": round(latency_ms, 2),
-        "total_docs": _engine.storage.count()
+        "latency_ms": round(last_metrics["duration"] * 1000, 2),
+        "total_docs": _engine.storage.count(),
+        "system_metrics": last_metrics,
+        "quantization_mode": q_mode
     }
 
 @app.get("/health")
