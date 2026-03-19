@@ -28,16 +28,16 @@ Experience the engine visually through a React-powered search interface.
 
 ## 📊 Benchmarks & Quality
 
-*Verified actual numbers (M5 MacBook Pro) - 10,000 Documents.*
+*Verified actual numbers (M5 MacBook Pro) - 20,000 Documents.*
 
-### Search Performance (10,000 Docs @ 384-dim)
+### Search Performance (20,000 Docs @ 384-dim)
 | Mode | Search Latency | Indexing Time* | Peak RSS Memory |
 |------|----------------|---------------|-----------------|
-| **Baseline (float32)** | 1.30 ms | 0.087 s | 530 MB |
-| **SQ8 (uint8)** | 3.06 ms | 0.057 s | 560 MB |
-| **PQ (8-subspaces)** | **0.61 ms** | 0.505 s | 560 MB |
+| **Baseline (float32)** | 1.41 ms | 0.149 s | 610 MB |
+| **SQ8 (uint8)** | 7.65 ms | 0.122 s | 677 MB |
+| **PQ (8-subspaces)** | **1.15 ms** | 1.028 s | 677 MB |
 
-*\*Indexing includes K-Means training for PQ.*
+\*Indexing includes K-Means training for PQ.
 
 ### Precision (ArXiv - 200 docs)
 | Ranking Mode | Mean MRR | Mean nDCG@10 |

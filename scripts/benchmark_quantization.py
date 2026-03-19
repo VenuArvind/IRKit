@@ -35,7 +35,7 @@ def run_benchmark(mode: str = None):
     source = MockSource()
     
     # 1. Indexing (Profiling will print report automatically)
-    engine.index(source, max_docs=10000)
+    engine.index(source, max_docs=20000)
     
     # 2. Search
     query = "test search query"
