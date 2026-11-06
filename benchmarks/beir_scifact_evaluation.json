@@ -1,0 +1,26 @@
+{
+  "BM25 Only": {
+    "mean_ndcg_at_10": 0.1814,
+    "mean_mrr": 0.174,
+    "p50_latency_ms": 3.38,
+    "p95_latency_ms": 4.2
+  },
+  "Dense (MiniLM-L6)": {
+    "mean_ndcg_at_10": 0.2055,
+    "mean_mrr": 0.1927,
+    "p50_latency_ms": 7.88,
+    "p95_latency_ms": 18.48
+  },
+  "Hybrid (RRF)": {
+    "mean_ndcg_at_10": 0.205,
+    "mean_mrr": 0.195,
+    "p50_latency_ms": 12.13,
+    "p95_latency_ms": 13.94
+  },
+  "Hybrid + Reranking": {
+    "mean_ndcg_at_10": 0.1545,
+    "mean_mrr": 0.1531,
+    "p50_latency_ms": 92.54,
+    "p95_latency_ms": 119.85
+  }
+}

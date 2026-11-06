@@ -16,7 +16,13 @@ class CrossEncoderRanker:
         2. Get scores from model
         3. Re-sort candidates
         """
-        pairs = [[query, f"{res.title} {res.snippet}"] for res in candidates]
+        if not candidates:
+            return []
+
+        pairs = [
+            [query, f"{res.title}. {res.metadata.get('text', res.snippet)}"]
+            for res in candidates
+        ]
         scores = self.model.predict(pairs)
         for res, score in zip(candidates, scores):
             res.score = float(score)

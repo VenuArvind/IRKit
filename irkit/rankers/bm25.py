@@ -41,12 +41,14 @@ class BM25Ranker(BaseRanker):
         for i, score in enumerate(scores):
             if score > 0:
                 doc = self.doc_store[i]
+                meta = dict(doc.get('metadata', {}))
+                meta['text'] = doc['text']
                 results.append(SearchResult(
                     doc_id = doc['id'],
                     score = float(score),
                     title = doc['title'],
-                    snippet = doc['text'][0:200] + "...",
-                    metadata = doc.get('metadata',{})
+                    snippet = doc['text'][0:300] + "...",
+                    metadata = meta
                 ))
         
         results.sort(key=lambda x: x.score, reverse=True)

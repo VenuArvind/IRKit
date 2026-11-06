@@ -74,3 +74,21 @@ RUNNING BENCHMARK: Mode=pq
 --------------------------------
 Index size: 10000 documents
 Search results returned: 5
+
+
+============================================================
+RUNNING BENCHMARK: Semantic Vector Cache Latency (P50/P90/P95)
+============================================================
+Index size: 200 documents (ArXiv scientific papers)
+Queries: 15 distinct domain queries evaluated over 5 repetitions (75 warm queries)
+
+Mode: Hybrid Retrieval (BM25 + Semantic Dense)
+- Uncached: P50 = 16.84 ms | P90 = 211.92 ms | P95 = 229.31 ms
+- Cached:   P50 = 5.53 ms  | P90 = 7.44 ms   | P95 = 7.65 ms
+- Latency Reduction (P95): 30.0x faster
+
+Mode: Two-Stage Pipeline (Hybrid + Cross-Encoder Reranker)
+- Uncached: P50 = 102.81 ms | P90 = 131.27 ms | P95 = 154.73 ms
+- Cached:   P50 = 5.03 ms   | P90 = 5.32 ms   | P95 = 5.40 ms
+- Latency Reduction (P95): 28.6x faster
+============================================================

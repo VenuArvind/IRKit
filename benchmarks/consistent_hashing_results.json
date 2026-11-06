@@ -1,0 +1,24 @@
+{
+  "num_keys": 10000,
+  "initial_nodes": [
+    "shard-0",
+    "shard-1",
+    "shard-2"
+  ],
+  "initial_counts": {
+    "shard-0": 3439,
+    "shard-1": 3189,
+    "shard-2": 3372
+  },
+  "added_node": "shard-3",
+  "new_counts": {
+    "shard-0": 2672,
+    "shard-1": 2162,
+    "shard-2": 2529,
+    "shard-3": 2637
+  },
+  "keys_moved": 2637,
+  "keys_moved_pct": 26.37,
+  "theoretical_movement_pct": 25.0,
+  "inter_node_migrations": 0
+}

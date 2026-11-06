@@ -35,6 +35,7 @@ class SemanticRanker(BaseRanker):
             self.quantizer.train(vectors)
             self.quantized_vectors = self.quantizer.encode(vectors)
         else:
+            self.faiss_index.reset()
             self.faiss_index.add(vectors)
             
         print(f" [SemanticRanker] Indexed {len(documents)} documents (Quantization: {self.quantization}).")
@@ -76,12 +77,14 @@ class SemanticRanker(BaseRanker):
             
             doc = self.doc_store[idx]
             score = 1.0 / (1.0 + float(dist))
+            meta = dict(doc.get("metadata", {}))
+            meta["text"] = doc["text"]
             
             results.append(SearchResult(
                 doc_id=doc["id"],
                 score=score,
                 title=doc["title"],
-                snippet=doc["text"][:200] + "...",
-                metadata=doc.get("metadata", {})
+                snippet=doc["text"][:300] + "...",
+                metadata=meta
             ))
         return results

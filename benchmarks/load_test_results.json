@@ -1,0 +1,10 @@
+{
+  "total_requests": 400,
+  "concurrency": 20,
+  "total_time_seconds": 2.7,
+  "throughput_qps": 148.3,
+  "p50_latency_ms": 123.88,
+  "p90_latency_ms": 145.5,
+  "p95_latency_ms": 178.05,
+  "p99_latency_ms": 340.51
+}
