@@ -70,6 +70,20 @@ Simulated concurrent client traffic using FastAPI ASGI transport (400 requests, 
 - **P95 Latency:** 178.05 ms
 - **P99 Latency:** 340.51 ms
 
+### 5. High-Throughput Protocol Benchmarking: gRPC (Protobuf) vs. REST (JSON)
+Evaluated across **1,000 requests** comparing HTTP/2 binary Protocol Buffers vs. HTTP/1.1 JSON (`benchmarks/benchmark_grpc_vs_rest.py`):
+
+| Transport Layer | Throughput | P50 Latency | P95 Latency | P99 Latency | Wire Payload / Query | Serialization Overhead |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **REST (JSON / HTTP/1.1)** | 625.1 QPS | 1.52 ms | 2.30 ms | 2.43 ms | 5,101 bytes | 12.1 µs |
+| **gRPC (Protobuf / HTTP/2)** | **928.3 QPS** *(+48.5%)* | **1.01 ms** | **1.75 ms** *(-23.9%)* | **1.82 ms** | **4,200 bytes** *(-17.7%)* | **0.9 µs** *(14.0x faster)* |
+
+- **Serialization Acceleration:** Binary Protobuf serialization executes in **0.9 µs** (vs. 12.1 µs for JSON `dumps`, **14.0x speedup**), with **4.2x faster** deserialization (1.8 µs vs 7.5 µs).
+- **Wire Overhead:** Binary encoding reduces network transmission footprint by **17.7%**.
+- **Serving Throughput:** HTTP/2 connection multiplexing and binary framing boost throughput from 625.1 QPS to **928.3 QPS (+48.5% capacity)**.
+
+*Raw telemetry saved to [`benchmarks/grpc_vs_rest_results.json`](benchmarks/grpc_vs_rest_results.json).*
+
 ---
 
 ## Technical Architecture

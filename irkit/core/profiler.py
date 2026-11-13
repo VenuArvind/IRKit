@@ -1,4 +1,5 @@
 import time
+import os
 import resource
 import tracemalloc
 from functools import wraps
@@ -56,13 +57,14 @@ class EngineProfiler:
             "peak_rss_mb": peak_rss / 1024
         })
 
-        print(f"\n🚀 --- Profiler Report: {self.name.upper()} ---")
-        print(f"⏱️  Duration:         {duration:.6f} s")
-        print(f"💻 CPU Time (User):   {user_cpu:.6f} s")
-        print(f"🖥️  CPU Time (System): {sys_cpu:.6f} s")
-        print(f"🧠 Peak Heap Memory:  {peak_memory / 1024 / 1024:.2f} MB")
-        print(f"🏠 Peak RSS Memory:   {peak_rss / 1024:.2f} MB")
-        print("-" * (26 + len(self.name)))
+        if os.environ.get("IRKIT_SILENT_PROFILER", "0") != "1":
+            print(f"\n🚀 --- Profiler Report: {self.name.upper()} ---")
+            print(f"⏱️  Duration:         {duration:.6f} s")
+            print(f"💻 CPU Time (User):   {user_cpu:.6f} s")
+            print(f"🖥️  CPU Time (System): {sys_cpu:.6f} s")
+            print(f"🧠 Peak Heap Memory:  {peak_memory / 1024 / 1024:.2f} MB")
+            print(f"🏠 Peak RSS Memory:   {peak_rss / 1024:.2f} MB")
+            print("-" * (26 + len(self.name)))
 
 def profile_engine(name: str):
     """ Decorator wrapper for EngineProfiler """

@@ -1,0 +1,27 @@
+{
+  "benchmark": "irkit_grpc_vs_rest",
+  "num_queries": 1000,
+  "corpus_docs": 500,
+  "payload_bytes": {
+    "rest_json": 5101,
+    "grpc_protobuf": 4200,
+    "reduction_percent": 17.66
+  },
+  "serialization_speedup_x": 13.97,
+  "deserialization_speedup_x": 4.23,
+  "rest_json": {
+    "qps": 625.1,
+    "p50_ms": 1.52,
+    "p90_ms": 2.23,
+    "p95_ms": 2.3,
+    "p99_ms": 2.43
+  },
+  "grpc_protobuf": {
+    "qps": 928.3,
+    "p50_ms": 1.01,
+    "p90_ms": 1.72,
+    "p95_ms": 1.75,
+    "p99_ms": 1.82
+  },
+  "p95_latency_reduction_percent": 24.25
+}

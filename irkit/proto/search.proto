@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package irkit;
+
+service SearchService {
+  // Standard unary search matching REST /search
+  rpc Search (SearchRequest) returns (SearchResponse);
+
+  // Server-streaming search for real-time hit streaming over HTTP/2
+  rpc StreamSearch (SearchRequest) returns (stream SearchHit);
+
+  // System health check
+  rpc Health (HealthRequest) returns (HealthResponse);
+}
+
+message SearchRequest {
+  string query = 1;
+  int32 top_k = 2;
+  bool rerank = 3;
+}
+
+message SearchHit {
+  string doc_id = 1;
+  float score = 2;
+  string title = 3;
+  string snippet = 4;
+  map<string, string> metadata = 5;
+}
+
+message SearchResponse {
+  string query = 1;
+  repeated SearchHit hits = 2;
+  float latency_ms = 3;
+  int64 total_docs = 4;
+  string quantization_mode = 5;
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;
+  bool engine_ready = 2;
+  int64 total_docs = 3;
+}

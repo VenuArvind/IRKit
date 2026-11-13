@@ -35,10 +35,12 @@ dependencies = [
     "httpx>=0.27.0",
     "feedparser>=6.0.0",
     "scipy>=1.10.0",
+    "grpcio>=1.60.0",
+    "protobuf>=5.0.0",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-asyncio", "pytest-cov", "build", "twine"]
+dev = ["pytest", "pytest-asyncio", "pytest-cov", "build", "twine", "grpcio-tools>=1.60.0"]
 
 [project.scripts]
 irkit = "cli.main:app"

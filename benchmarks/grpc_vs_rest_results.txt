@@ -1,0 +1,7 @@
+IRKit SWE Micro-Benchmark: gRPC vs. REST
+=============================================
+Wire Payload: REST=5101B, gRPC=4200B (-17.7%)
+Serialization: 13.97x faster, Deserialization: 4.23x faster
+REST Throughput: 625.1 QPS, P50=1.52ms, P95=2.30ms, P99=2.43ms
+gRPC Throughput: 928.3 QPS, P50=1.01ms, P95=1.75ms, P99=1.82ms
+P95 Latency Reduction: 24.2%

@@ -4,7 +4,7 @@ dist/
 build/
 *.egg-info/
 .pytest_cache/
-.coverage
+.coverage*
 coverage.xml
 .env
 *.db
