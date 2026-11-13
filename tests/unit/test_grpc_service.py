@@ -71,3 +71,4 @@ def test_grpc_streaming_search(grpc_service):
     assert hits[0].doc_id == "doc3"
     assert "Distributed" in hits[0].title
     assert hits[0].metadata.get("category") == "systems"
+

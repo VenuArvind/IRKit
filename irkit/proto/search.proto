@@ -42,3 +42,4 @@ message HealthResponse {
   bool engine_ready = 2;
   int64 total_docs = 3;
 }
+

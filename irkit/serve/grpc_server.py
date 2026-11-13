@@ -112,3 +112,4 @@ def create_grpc_server(engine, max_workers: int = 10, port: int = 50051) -> grpc
     search_pb2_grpc.add_SearchServiceServicer_to_server(servicer, server)
     server.add_insecure_port(f"0.0.0.0:{port}")
     return server
+
